@@ -42,13 +42,15 @@ def group_list_for_user(context, data_dict):
         if not user_id:
             return []
 
+        # --- DÜZELTİLMİŞ SORGU ---
         q = model.Session.query(model.Member, model.Group) \
+            .filter(model.Member.group_id == model.Group.id) \
             .filter(model.Member.table_name == 'user') \
             .filter(model.Member.capacity.in_(roles)) \
             .filter(model.Member.table_id == user_id) \
             .filter(model.Member.state == 'active') \
-            .join(model.Group, model.Group.id == model.Member.group_id) \
             .filter(model.Group.is_organization == False)
+        # --- DÜZELTİLMİŞ SORGUNUN SONU ---
 
         group_ids_to_capacities = {member.group_id: member.capacity for member, group in q.all()}
         group_ids = group_ids_to_capacities.keys()
@@ -58,13 +60,13 @@ def group_list_for_user(context, data_dict):
 
         groups_q = groups_q.filter(model.Group.id.in_(group_ids))
         groups_and_capacities = [
-            (group, group_ids_to_capacities.get(group.id, 'member')) 
+            (group, group_ids_to_capacities.get(group.id, 'member'))
             for group in groups_q.all()
         ]
 
     context['with_capacity'] = True
     groups_list = model_dictize.group_list_dictize(
-        groups_and_capacities, 
+        groups_and_capacities,
         context,
         with_package_counts=asbool(data_dict.get('include_dataset_count', False))
     )
