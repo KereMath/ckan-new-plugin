@@ -1,0 +1,14 @@
+# izka_customs-js:
+#   filter: rjsmin
+#   output: ckanext-izka_customs/%(version)s-izka_customs.js
+#   contents:
+#     - js/izka_customs.js
+#   extra:
+#     preload:
+#       - base/main
+
+# izka_customs-css:
+#   filter: cssrewrite
+#   output: ckanext-izka_customs/%(version)s-izka_customs.css
+#   contents:
+#     - css/izka_customs.css

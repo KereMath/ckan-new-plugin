@@ -1,0 +1,5 @@
+include README.rst
+include LICENSE
+include requirements.txt
+recursive-include ckanext/izka_customs *.html *.json *.js *.less *.css *.mo *.yml
+recursive-include ckanext/izka_customs/migration *.ini *.py *.mako
